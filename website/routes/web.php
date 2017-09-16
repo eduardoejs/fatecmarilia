@@ -17,4 +17,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/admin', 'Admin\HomeController@index')->name('admin.index');
+
+Route::namespace('Admin\Users')->prefix('admin')->middleware('auth')->group(function(){
+  Route::resource('users', 'UserController');
+  Route::get('users/{id}/status/{status}', 'UserController@setStatus')->name('users.status');
+});
