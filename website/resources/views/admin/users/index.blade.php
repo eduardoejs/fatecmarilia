@@ -10,7 +10,7 @@
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
           <li><a href="{{ route('admin.index') }}">Admin</a></li>
-          <li class="active">Users</li>
+          <li class="active">Usuários</li>
         </ol>
       </section>
 
@@ -27,6 +27,18 @@
           @endcan
 
           <div class="box-body table-responsive pad">
+            @component('components.success')
+              @slot('type')
+                success
+              @endslot
+              @slot('icon')
+                <i class="fa fa-thumbs-up fa-2x" aria-hidden="true" style='margin-left:10px'></i>
+              @endslot
+              @slot('title')
+                Sucesso!
+              @endslot
+              <hr>
+            @endcomponent
             @if (count($users) > 0)
               <table class="table table-bordered table-hover">
               <thead>
@@ -67,9 +79,9 @@
                       @else
                         <a href="{{ route('users.status', ['id' => $user->id, 'status' => 1]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Liberar"><i class="fa fa-check"></i></button></a>
                       @endif
-                      <a href="#"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil-square-o"></i></button></a>
-                      <a href="#"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Excluir"><i class="fa fa-trash"></i></button></a>
-
+                      <a href="{{ route('users.edit', ['id' => $user->id]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil-square-o"></i></button></a>
+                      <a href="{{ route('users.delete', ['id' => $user->id]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Excluir"><i class="fa fa-trash"></i></button></a>
+                      <a href="{{ route('users.show', ['id' => $user->id]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Reset Password"><i class="fa fa-key"></i></button></a>
                     </div>
 
 

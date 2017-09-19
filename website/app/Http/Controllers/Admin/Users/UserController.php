@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Users\User;
+use Validator;
+use App\Classes\RandomString;
 
 class UserController extends Controller
 {
@@ -31,7 +33,8 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        $this->authorize('create-user');
+        return view('admin.users.create');
     }
 
     /**
@@ -42,7 +45,38 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->authorize('create-user');
+
+        $rules = [
+          'name' => 'required|max:255',
+          'email' => 'required|email|max:255|unique:users',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails()){
+          $messages = $validator->messages();
+          return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $user = new User();
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $password = RandomString::random();
+        $user->plainPassword =$password;
+        $user->password = bcrypt($password);
+        if (isset($request->status)) {
+          $user->status = true;
+        } else {
+          $user->status = false;
+        }
+        $user->save();
+
+        //TODO -> disparar email com senha e depois zerar campo plainPassword
+
+        session()->flash('msg', "O usuário $user->name foi cadastrado no sistema");
+        return redirect()->route('users.index');
+
     }
 
     /**
@@ -53,7 +87,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+
     }
 
     /**
@@ -64,7 +98,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $this->authorize('update-user');
+        $user = User::findOrFail($id);
+        return view('admin.users.update')->with('user', $user);
     }
 
     /**
@@ -76,7 +112,33 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->authorize('update-user');
+
+        $rules = [
+          'name' => 'required|max:255',
+          'email' => 'required|email|max:255',
+        ];
+
+        $validator = Validator::make($request->except('_token'), $rules);
+
+        if($validator->fails()){
+          $messages = $validator->messages();
+          return redirect()->back()->withErrors($validator)->withInput();
+        }
+
+        $user = User::findOrFail($id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        if (isset($request->status)) {
+          $user->status = true;
+        } else {
+          $user->status = false;
+        }
+
+        $result = $user->save();
+        
+        session()->flash('msg', "O usuário $user->name foi ALTERADO no sistema");
+        return redirect()->route('users.index');
     }
 
     /**
@@ -88,6 +150,13 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function delete($id)
+    {
+      $this->authorize('delete-user');
+      $user = User::findOrFail($id)->delete();
+      return redirect()->route('users.index');
     }
 
     public function setStatus($id, $status)
