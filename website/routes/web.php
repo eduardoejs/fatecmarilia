@@ -23,4 +23,5 @@ Route::namespace('Admin\Users')->prefix('admin')->middleware('auth')->group(func
   Route::resource('users', 'UserController');
   Route::get('users/{id}/status/{status}', 'UserController@setStatus')->name('users.status');
   Route::get('users/delete/{id}', 'UserController@delete')->name('users.delete');
+
 });

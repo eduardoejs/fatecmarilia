@@ -46,7 +46,8 @@
           <div class="box-body">
             <form class="" action="{{ route('users.update', ['id' => $user->id]) }}" method="post">
               {{ csrf_field() }}
-              <input name="_method" type="hidden" value="PATCH">
+              {!! method_field('PUT') !!}
+              <!--<input name="_method" type="hidden" value="PATCH">-->
               @include('admin.users.form')
               <div class="row">
                 <div class="text-center col-md-3">

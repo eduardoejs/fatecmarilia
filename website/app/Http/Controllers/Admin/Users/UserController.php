@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Users\User;
 use Validator;
 use App\Classes\RandomString;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -60,7 +61,7 @@ class UserController extends Controller
         }
 
         $user = new User();
-        $user->name = $request->input('name');
+        $user->name = Str::upper($request->input('name'));
         $user->email = $request->input('email');
         $password = RandomString::random();
         $user->plainPassword =$password;
@@ -127,7 +128,7 @@ class UserController extends Controller
         }
 
         $user = User::findOrFail($id);
-        $user->name = $request->input('name');
+        $user->name = Str::upper($request->input('name'));
         $user->email = $request->input('email');
         if (isset($request->status)) {
           $user->status = true;
@@ -135,10 +136,22 @@ class UserController extends Controller
           $user->status = false;
         }
 
-        $result = $user->save();
-        
-        session()->flash('msg', "O usuário $user->name foi ALTERADO no sistema");
-        return redirect()->route('users.index');
+        try {
+          $user->save();
+          session()->flash('msg', "O usuário $user->name foi ALTERADO no sistema");
+          return redirect()->route('users.index');
+        } catch (\PDOException $e) {
+
+          $message = "";
+          if ($e->errorInfo[0] = 23000) {
+            $message = $e->errorInfo[2];
+          } else {
+            $message = $e->errorInfo[2];
+          }
+          return redirect()->back()->withErrors(['errors' => $message])->withInput();
+        }
+
+
     }
 
     /**

@@ -1,17 +1,17 @@
 <div class="form-group">
   <label for="name">Nome:</label>
   @if (isset($user->name))
-    <input type="text" name="name" value="{{ $user->name }}" class="form-control" id="name" placeholder="Nome do usuário" required>
+    <input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control" id="name" placeholder="Nome do usuário" required>
   @else
-    <input type="text" name="name" class="form-control" id="name" placeholder="Nome do usuário" required>
+    <input type="text" name="name" value="{{ old('name') }}" class="form-control" id="name" placeholder="Nome do usuário" required>
   @endif
 </div>
 <div class="form-group">
   <label for="email">E-Mail:</label>
   @if (isset($user->email))
-    <input type="email" name="email" value="{{ $user->email }}" class="form-control" id="email" placeholder="E-Mail do usuário" required>
+    <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-control" id="email" placeholder="E-Mail do usuário" required>
   @else
-    <input type="email" name="email" class="form-control" id="email" placeholder="E-Mail do usuário" required>
+    <input type="email" name="email" value="{{ old('email') }}" class="form-control" id="email" placeholder="E-Mail do usuário" required>
   @endif
 </div>
 <div class="form-group">

@@ -80,7 +80,7 @@
                         <a href="{{ route('users.status', ['id' => $user->id, 'status' => 1]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Liberar"><i class="fa fa-check"></i></button></a>
                       @endif
                       <a href="{{ route('users.edit', ['id' => $user->id]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Editar"><i class="fa fa-pencil-square-o"></i></button></a>
-                      <a href="{{ route('users.delete', ['id' => $user->id]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Excluir"><i class="fa fa-trash"></i></button></a>
+                      <a href="{{ route('users.destroy', ['id' => $user->id]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Excluir"><i class="fa fa-trash"></i></button></a>
                       <a href="{{ route('users.show', ['id' => $user->id]) }}"><button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="Reset Password"><i class="fa fa-key"></i></button></a>
                     </div>
 
