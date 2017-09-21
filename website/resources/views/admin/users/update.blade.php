@@ -19,7 +19,7 @@
       <!-- Main content -->
       <section class="content">
 
-        @component('components.alert')
+        @component('components.alert-error')
           @slot('type')
             danger
           @endslot

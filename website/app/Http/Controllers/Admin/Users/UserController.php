@@ -23,6 +23,7 @@ class UserController extends Controller
     public function index()
     {
         $this->authorize('read-user');
+
         $users = User::orderBy('name', 'asc')->paginate(30);
         return view('admin.users.index')->withUsers($users);
     }
@@ -35,6 +36,7 @@ class UserController extends Controller
     public function create()
     {
         $this->authorize('create-user');
+
         return view('admin.users.create');
     }
 
@@ -54,7 +56,6 @@ class UserController extends Controller
         ];
 
         $validator = Validator::make($request->all(), $rules);
-
         if($validator->fails()){
           $messages = $validator->messages();
           return redirect()->back()->withErrors($validator)->withInput();
@@ -75,9 +76,7 @@ class UserController extends Controller
 
         //TODO -> disparar email com senha e depois zerar campo plainPassword
 
-        session()->flash('msg', "O usuário $user->name foi cadastrado no sistema");
-        return redirect()->route('users.index');
-
+        return redirect()->route('users.index')->withSuccess("O usuário $user->name foi cadastrado no sistema");
     }
 
     /**
@@ -88,7 +87,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
+        $this->authorize('read-user');
     }
 
     /**
@@ -100,6 +99,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $this->authorize('update-user');
+
         $user = User::findOrFail($id);
         return view('admin.users.update')->with('user', $user);
     }
@@ -121,7 +121,6 @@ class UserController extends Controller
         ];
 
         $validator = Validator::make($request->except('_token'), $rules);
-
         if($validator->fails()){
           $messages = $validator->messages();
           return redirect()->back()->withErrors($validator)->withInput();
@@ -138,8 +137,7 @@ class UserController extends Controller
 
         try {
           $user->save();
-          session()->flash('msg', "O usuário $user->name foi ALTERADO no sistema");
-          return redirect()->route('users.index');
+          return redirect()->route('users.index')->withSuccess("O usuário $user->name foi ALTERADO no sistema");
         } catch (\PDOException $e) {
 
           $message = "";
@@ -150,8 +148,6 @@ class UserController extends Controller
           }
           return redirect()->back()->withErrors(['errors' => $message])->withInput();
         }
-
-
     }
 
     /**
@@ -162,19 +158,25 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->authorize('delete-user');
+
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->route('users.index');
     }
 
     public function delete($id)
     {
       $this->authorize('delete-user');
+
       $user = User::findOrFail($id)->delete();
-      return redirect()->route('users.index');
+      return redirect()->route('users.index')->withSuccess("O usuário $user->name foi EXCLUÍDO do sistema");
     }
 
     public function setStatus($id, $status)
     {
         $this->authorize('set-status-user');
+
         $user = User::findOrFail($id);
         if($status == 1){
           $user->status = 1;

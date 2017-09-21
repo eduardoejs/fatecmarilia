@@ -19,7 +19,7 @@
       <!-- Main content -->
       <section class="content">
 
-        @component('components.alert')
+        @component('components.alert-error')
           @slot('type')
             danger
           @endslot
@@ -46,7 +46,7 @@
           <div class="box-body">
             <form class="" action="{{ route('users.store') }}" method="post">
               {{ csrf_field() }}
-              @include('admin.users.form')              
+              @include('admin.users.form')
               <div class="row">
                 <div class="text-center col-md-3">
                   <button type="submit" name="button" class="btn btn-primary btn-block" role="submit"><i class="fa fa-floppy-o" aria-hidden="true"></i>
