@@ -23,4 +23,5 @@ Route::namespace('Admin\Users')->prefix('admin')->middleware('auth')->group(func
   Route::resource('users', 'UserController');
   Route::post('users/search', 'UserController@pesquisar')->name('users.pesquisa');
   Route::get('users/{id}/status/{status}', 'UserController@setStatus')->name('users.status');
+  Route::get('users/email', 'UserController@email')->name('users.email');
 });

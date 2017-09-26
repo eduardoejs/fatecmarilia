@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Admin\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Users\User;
-use App\Models\Admin\NivelAcesso\Role;
 use Validator;
 use App\Classes\RandomString;
 use Illuminate\Support\Str;
+use Mail;
+use App\Mail\NewUserWelcome;
+use Auth;
 
 class UserController extends Controller
 {
@@ -200,4 +202,11 @@ class UserController extends Controller
         }
         return redirect()->route('users.index');
     }
+
+    public function email()
+    {
+        //Mail::to(Auth::user()->email)->send(new NewUserWelcome());
+        return redirect()->route('users.index');
+    }
+
 }
