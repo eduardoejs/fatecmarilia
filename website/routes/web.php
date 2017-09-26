@@ -21,7 +21,6 @@ Route::get('/admin', 'Admin\HomeController@index')->name('admin.index');
 
 Route::namespace('Admin\Users')->prefix('admin')->middleware('auth')->group(function(){
   Route::resource('users', 'UserController');
+  Route::post('users/search', 'UserController@pesquisar')->name('users.pesquisa');
   Route::get('users/{id}/status/{status}', 'UserController@setStatus')->name('users.status');
-  Route::get('users/delete/{id}', 'UserController@delete')->name('users.delete');
-
 });

@@ -1,69 +1,67 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>{{ config('app.name', 'Laravel') }}</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ config('app.name', 'Laravel') }}</title>
+    <!-- Bootstrap -->
+    <link href="{{ asset('/gentelella/vendors/bootstrap/dist/css/bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="{{ asset('/gentelella/vendors/font-awesome/css/font-awesome.min.css') }}" rel="stylesheet">
+    <!-- bootstrap-progressbar -->
+    <link href="{{ asset('/gentelella/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet">
+    @yield('src-css')
+    <!-- Custom Theme Style -->
+    <link href="{{ asset('/gentelella/build/css/custom.min.css') }}" rel="stylesheet">
+  </head>
 
-  <link rel="stylesheet" href="{{ asset('/admin_lte/bower_components/bootstrap/dist/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('/admin_lte/bower_components/font-awesome/css/font-awesome.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('/admin_lte/bower_components/Ionicons/css/ionicons.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('/admin_lte/dist/css/AdminLTE.min.css') }}">
-  @yield('css')
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="{{ asset('/admin_lte/dist/css/skins/_all-skins.min.css') }}">
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="col-md-3 left_col">
+          <div class="left_col scroll-view">
+            <div class="navbar nav_title" style="border: 0;">
+              <a href="#" class="site_title"><i class='fa fa-mortar-board'></i> <span>{{ config('app.name', 'Laravel') }}</span></a>
+            </div>
 
-  <!-- Google Font
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">-->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Ubuntu">
-</head>
-<body class="hold-transition skin-blue fixed sidebar-mini sidebar-mini-expand-feature" style="height: auto; min-height: 100%">
-<div class="wrapper">
+            <div class="clearfix"></div>
 
-  @include('admin.templates.main-header')
-  @include('admin.templates.main-sidebar')
+            @include('admin.includes.profile_quick_info')
 
-    <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
-    @yield('conteudo')
-    <!-- /.content -->
-  </div>
+            <br />
 
-  @include('admin.templates.main-footer')
-  @include('admin.templates.control-sidebar')
-</div>
-<!-- ./wrapper -->
+            @include('admin.includes.sidebar-menu')
 
-<!-- jQuery 3 -->
-<script src="{{ asset('/admin_lte/bower_components/jquery/dist/jquery.min.js') }}"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="{{ asset('/admin_lte/bower_components/jquery-ui/jquery-ui.min.js') }}"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button);
-</script>
-<!-- Bootstrap 3.3.7 -->
-<script src="{{ asset('/admin_lte/bower_components/bootstrap/dist/js/bootstrap.min.js') }}"></script>
-<!-- Slimscroll-->
-<script src="{{ asset('/admin_lte/bower_components/jquery-slimscroll/jquery.slimscroll.min.js') }}"></script>
-<!-- FastClick -->
-<script src="{{ asset('/admin_lte/bower_components/fastclick/lib/fastclick.js') }}"></script>
-<!-- AdminLTE App -->
-<script src="{{ asset('/admin_lte/dist/js/adminlte.min.js') }}"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="{{ asset('/admin_lte/dist/js/pages/dashboard.js') }}"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{ asset('/admin_lte/dist/js/demo.js') }}"></script>
-  @yield('js')
-  @yield('scripts')
-</body>
+            @include('admin.includes.menu-footer-buttons')
+          </div>
+        </div>
+
+        @include('admin.includes.top-nav')
+
+        <!-- page content -->
+        <div class="right_col" role="main">
+          @yield('conteudo')
+        </div>
+        <!-- /page content -->
+
+        @include('admin.includes.footer')
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script src="{{ asset('/gentelella/vendors/jquery/dist/jquery.min.js') }}"></script>
+    <!-- Bootstrap -->
+    <script src="{{ asset('/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
+    <!-- FastClick -->
+    <script src="{{ asset('/gentelella/vendors/fastclick/lib/fastclick.js') }}"></script>
+
+    <!-- bootstrap-progressbar -->
+    <script src="{{ asset('/gentelella/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
+    @yield('src-js')
+    <!-- Custom Theme Scripts -->
+    <script src="{{ asset('/gentelella/build/js/custom.min.js') }}"></script>
+    @yield('scripts')
+  </body>
 </html>

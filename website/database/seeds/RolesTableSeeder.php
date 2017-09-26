@@ -37,5 +37,11 @@ class RolesTableSeeder extends Seeder
           'description' => 'Perfil de usuário do tipo ALUNO',
           'slug' => 'aluno',
         ]);
+
+        Role::create([
+          'name' => 'EX-ALUNO',
+          'description' => 'Perfil de usuário do tipo EX-ALUNO',
+          'slug' => 'ex-aluno',
+        ]);
     }
 }

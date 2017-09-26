@@ -3,6 +3,7 @@
 namespace App\Models\Admin\NivelAcesso;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Admin\Users\User;
 
 class Role extends Model
 {
@@ -21,5 +22,5 @@ class Role extends Model
     public function unsetPermission(Permission $permission)
     {
       return $this->permissions()->detach($permission);
-    }
+    }    
 }

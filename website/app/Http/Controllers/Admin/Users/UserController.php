@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Users\User;
+use App\Models\Admin\NivelAcesso\Role;
 use Validator;
 use App\Classes\RandomString;
 use Illuminate\Support\Str;
@@ -24,7 +25,7 @@ class UserController extends Controller
     {
         $this->authorize('read-user');
 
-        $users = User::orderBy('name', 'asc')->paginate(30);
+        $users = User::orderBy('name', 'asc')->paginate(50);
         return view('admin.users.index')->withUsers($users);
     }
 
@@ -159,18 +160,18 @@ class UserController extends Controller
     public function destroy($id)
     {
         $this->authorize('delete-user');
-
         $user = User::findOrFail($id);
         $user->delete();
-        return redirect()->route('users.index');
+        return redirect()->route('users.index')->withSuccess("O usuário $user->name foi EXCLUÍDO do sistema");
     }
 
     public function delete($id)
     {
-      $this->authorize('delete-user');
+        $this->authorize('delete-user');
 
-      $user = User::findOrFail($id)->delete();
-      return redirect()->route('users.index')->withSuccess("O usuário $user->name foi EXCLUÍDO do sistema");
+        $user = User::findOrFail($id);
+        $user->delete();
+        return redirect()->route('users.index')->withSuccess("O usuário $user->name foi EXCLUÍDO do sistema");
     }
 
     public function setStatus($id, $status)
@@ -185,6 +186,18 @@ class UserController extends Controller
           $user->status = 0;
         }
         $user->save();
+        return redirect()->route('users.index');
+    }
+
+    public function pesquisar(Request $request)
+    {
+        $this->authorize('read-user');
+
+        $busca = $request->input('busca');
+        if(!empty($request->input('busca'))){
+            $users = User::orWhere('name', 'like', '%'.$request->input('busca').'%')->orderBy('name', 'asc')->paginate(30);
+            return view('admin.users.index')->withUsers($users)->withBusca($busca);
+        }
         return redirect()->route('users.index');
     }
 }
