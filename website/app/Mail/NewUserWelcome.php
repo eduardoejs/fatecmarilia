@@ -13,15 +13,17 @@ class NewUserWelcome extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+    public $password;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, $password)
     {
         $this->user = $user;
+        $this->password = $password;
     }
 
     /**
@@ -31,7 +33,6 @@ class NewUserWelcome extends Mailable
      */
     public function build()
     {
-        //$this->view('emails.user.newuserwelcome');
-        return $this->markdown('emails.user.newuserwelcome');
+        return $this->subject("Credenciais para acesso ao website")->markdown('emails.user.newuserwelcome');
     }
 }

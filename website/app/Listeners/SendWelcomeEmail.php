@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Classes\RandomString;
 use App\Events\NewUser;
 use App\Models\Admin\Users\User;
 use Illuminate\Queue\InteractsWithQueue;
@@ -29,9 +30,11 @@ class SendWelcomeEmail
      */
     public function handle(NewUser $event)
     {
-        Mail::to($event->user->email)->send(new NewUserWelcome($event->user));
-        $user = User::find($event->user->id);
-        $user->plainPassword = null;
-        $user->save();
+        $password = RandomString::random();
+
+        Mail::to($event->user->email)->queue(new NewUserWelcome($event->user, $password));
+
+        $event->user->password = bcrypt($password);
+        $event->user->save();
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
+use App\Events\NewUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Users\User;
@@ -67,17 +68,15 @@ class UserController extends Controller
         $user = new User();
         $user->name = Str::upper($request->input('name'));
         $user->email = $request->input('email');
-        $password = RandomString::random();
-        $user->plainPassword =$password;
-        $user->password = bcrypt($password);
+
+        //a senha é criada, encriptada e enviada quando o estado do model user é "created". Ver SendWelcomeEmail class
+
         if (isset($request->status)) {
           $user->status = true;
         } else {
           $user->status = false;
         }
         $user->save();
-
-        //TODO -> disparar email com senha e depois zerar campo plainPassword
 
         return redirect()->route('users.index')->withSuccess("O usuário $user->name foi cadastrado no sistema");
     }

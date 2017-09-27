@@ -18,7 +18,7 @@ class UsersTableSeeder extends Seeder
       User::create([
         'name' => 'ADMIN USER',
         'email' => 'admin@admin.br',
-        'plainPassword' => null,
+        //'plainPassword' => null,
         'password' => bcrypt('123456'),
         'status' => 1,
       ]);
@@ -29,7 +29,7 @@ class UsersTableSeeder extends Seeder
         User::create([
           'name' => strtoupper($faker->name),
           'email' => $faker->unique()->safeEmail,
-          'plainPassword' => null,
+          //'plainPassword' => null,
           'password' => bcrypt('123456'),
           //'status' => 1, //usuario ativo - default true
           'remember_token' => str_random(10),
@@ -40,7 +40,7 @@ class UsersTableSeeder extends Seeder
         User::create([
           'name' => strtoupper($faker->name),
           'email' => $faker->unique()->safeEmail,
-          'plainPassword' => null,
+          //'plainPassword' => null,
           'password' => bcrypt('123456'),
           'status' => 0, //usuario inativo
           'remember_token' => str_random(10),

@@ -1,20 +1,20 @@
 @component('mail::message')
-# Bem-vindo {{ $user->name }} ao website da Fatec Marília
+# Caro(a), {{ $user->name }}.<br>Bem-vindo(a) ao website da Fatec Marília.<br>
 
-Você está recebendo suas credenciais para autenticar-se na área privada do website.
+Você está recebendo suas credenciais para autenticar-se na área privada do website.<br>
 
+Use os dados abaixo para efetuar o login:
 @component('mail::panel')
-    Use os dados abaixo para efetuar o login:
-    Usuário: {{ $user->email }}
-    Senha: {{ $user->plainPassword }}
+    Usuário: {{ $user->email }}<br>
+    Senha: {{ $password }}
 @endcomponent
 
-@component('mail::button', ['url' => 'http://fatec.app/login'])
-Acessar minha área
+@component('mail::button', ['url' => 'http://fatec.app/login', 'color' => 'green'])
+Acessar minha Área
 @endcomponent
 
-<strong>Esse e-mail foi enviado automaticamente. Por favor, não responda esse e-mail. </strong>
+#Esse e-mail foi enviado automaticamente. Por favor, não responda esse e-mail.
 
-Obrigado,<br>
+Cordialmente,<br>
 {{ config('app.name') }}
 @endcomponent
