@@ -30,11 +30,14 @@ class SendWelcomeEmail
      */
     public function handle(NewUser $event)
     {
-        $password = RandomString::random();
+        //se user->id for diferente de 1 (Admin - Default) passa a enviar os emails com as senhas
+        if($event->user->id != 1){
+            $password = RandomString::random();
 
-        Mail::to($event->user->email)->queue(new NewUserWelcome($event->user, $password));
+            Mail::to($event->user->email)->queue(new NewUserWelcome($event->user, $password));
 
-        $event->user->password = bcrypt($password);
-        $event->user->save();
+            $event->user->password = bcrypt($password);
+            $event->user->save();
+        }
     }
 }

@@ -47,6 +47,7 @@ class LoginController extends Controller
         ]);
         $username = $request->email;
         $password = $request->password;
+
         if(\Auth::attempt(['email' => $username, 'password' => $password, 'status' => 1])){
           return redirect()->route('admin.index');
         } else {

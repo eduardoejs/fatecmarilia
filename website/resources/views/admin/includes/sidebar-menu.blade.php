@@ -10,7 +10,9 @@
           <li><a href="index3.html">Dashboard3</a></li>
         </ul>
       </li>
-      <li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> Usuários do Sistema </a></li>
+      @can('read-user')
+        <li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> Usuários do Sistema </a></li>
+      @endcan
       <li><a><i class="fa fa-cubes"></i> Controle Acesso <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="#"><i class='fa fa-user'></i> Perfil de usuário</a></li>
