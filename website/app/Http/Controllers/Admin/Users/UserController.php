@@ -2,22 +2,17 @@
 
 namespace App\Http\Controllers\Admin\Users;
 
-use App\Events\NewUser;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Users\User;
-use Validator;
-use App\Classes\RandomString;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
-use Mail;
-use App\Mail\NewUserWelcome;
-use Auth;
 
 class UserController extends Controller
 {
     public function __construct()
     {
-        \Carbon\Carbon::setLocale('pt_BR');
+        \Carbon\Carbon::setLocale('pt_BR'); // Exibe as mensagens do Carbon em Português
     }
     /**
      * Display a listing of the resource.
@@ -61,23 +56,22 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(), $rules);
         if($validator->fails()){
-          $messages = $validator->messages();
-          return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $user = new User();
         $user->name = Str::upper($request->input('name'));
         $user->email = $request->input('email');
 
-        //a senha é criada, encriptada e enviada quando o estado do model user é "created". Ver SendWelcomeEmail class
+        // A senha é criada, encriptada e enviada quando o estado do model user é "created".
+        // Ver SendWelcomeEmail class
 
         if (isset($request->status)) {
-          $user->status = true;
+            $user->status = true;
         } else {
-          $user->status = false;
+            $user->status = false;
         }
         $user->save();
-
         return redirect()->route('users.index')->withSuccess("O usuário $user->name foi cadastrado no sistema");
     }
 
@@ -118,37 +112,43 @@ class UserController extends Controller
         $this->authorize('update-user');
 
         $rules = [
-          'name' => 'required|max:255',
-          'email' => 'required|email|max:255',
+            'name' => 'required|max:255',
+            'email' => 'required|email|max:255',
         ];
 
         $validator = Validator::make($request->except('_token'), $rules);
         if($validator->fails()){
-          $messages = $validator->messages();
-          return redirect()->back()->withErrors($validator)->withInput();
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $user = User::findOrFail($id);
         $user->name = Str::upper($request->input('name'));
         $user->email = $request->input('email');
         if (isset($request->status)) {
-          $user->status = true;
+            $user->status = true;
         } else {
-          $user->status = false;
+            $user->status = false;
         }
 
         try {
-          $user->save();
-          return redirect()->route('users.index')->withSuccess("O usuário $user->name foi ALTERADO no sistema");
+            $user->save();
+            return redirect()->route('users.index')->withSuccess("O usuário $user->name foi ALTERADO no sistema");
         } catch (\PDOException $e) {
 
-          $message = "";
-          if ($e->errorInfo[0] = 23000) {
+            /***
+             * Exibe o erro retornado pelo banco de dados através deo PDOException.
+             * O retorno é do tipo array, então na posição 0 é informado o código do erro, e na sua posição 2 é a
+             * mensagem do erro.
+             * Ex. código 23000 corresponde ao erro de "Entrada de dados duplicados". Poderia retornar uma mensagem
+             * personalizada através do if
+             *  if ($e->errorInfo[0] = 23000) {
+                    $message = "Dados duplicados";
+                } else {
+                    $message = $e->errorInfo[2];
+                }
+             */
             $message = $e->errorInfo[2];
-          } else {
-            $message = $e->errorInfo[2];
-          }
-          return redirect()->back()->withErrors(['errors' => $message])->withInput();
+            return redirect()->back()->withErrors(['errors' => $message])->withInput();
         }
     }
 
@@ -175,37 +175,42 @@ class UserController extends Controller
         return redirect()->route('users.index')->withSuccess("O usuário $user->name foi EXCLUÍDO do sistema");
     }
 
+    /**
+     * Método setStatus altera o status do usuário
+     * @param $id
+     * @param $status
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function setStatus($id, $status)
     {
         $this->authorize('set-status-user');
 
         $user = User::findOrFail($id);
         if($status == 1){
-          $user->status = 1;
+            $user->status = 1;
         }
         else {
-          $user->status = 0;
+            $user->status = 0;
         }
         $user->save();
         return redirect()->route('users.index');
     }
 
+    /**
+     * Método pesquisar busca um usuário pelo nome
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function pesquisar(Request $request)
     {
         $this->authorize('read-user');
 
         $busca = $request->input('busca');
         if(!empty($request->input('busca'))){
-            $users = User::orWhere('name', 'like', '%'.$request->input('busca').'%')->orderBy('name', 'asc')->paginate(30);
+            $users = User::orWhere('name', 'like', '%'.$request->input('busca').'%')
+                            ->orderBy('name', 'asc')->paginate(30);
             return view('admin.users.index')->withUsers($users)->withBusca($busca);
         }
         return redirect()->route('users.index');
     }
-
-    public function email()
-    {
-        //Mail::to(Auth::user()->email)->send(new NewUserWelcome());
-        return redirect()->route('users.index');
-    }
-
 }

@@ -41,17 +41,23 @@ class LoginController extends Controller
 
     public function login(Request $request)
     {
+        // Valida as informações recebidas pelo Request
         $this->validate($request, [
             'email' => 'required|email',
             'password' => 'required|min:6',
         ]);
+
         $username = $request->email;
         $password = $request->password;
 
+        // Checa a tentativa de login do usuário. Só será aceito, se além das informações estiverem corretas,
+        // o status do usuário for true (1).
         if(\Auth::attempt(['email' => $username, 'password' => $password, 'status' => 1])){
-          return redirect()->route('admin.index');
+            return redirect()->route('admin.index');
         } else {
-            return redirect()->to('/login')->withErrors(['email' => 'Credenciais inválidas!'])->withInput(['email' => $username]);
+            return redirect()->to('/login')
+                    ->withErrors(['email' => 'Credenciais inválidas!'])
+                    ->withInput(['email' => $username]);
         }
     }
 }

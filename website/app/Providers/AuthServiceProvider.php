@@ -27,18 +27,18 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        // Executar antes das demais permissões verificando se o usuário é administrador
+        // Executa o gate antes das demais permissões verificando se o usuário é administrador
         Gate::before(function(User $user, $ability){
-          if($user->hasRole('administrador')){
-            return true;
-          }
+            if($user->hasRole('administrador')){
+                return true;
+            }
         });
 
         // Registra todas as permissões do sistema automaticamente
         if(!\App::runningInConsole()){
-          foreach ($this->getPermissions() as $key => $permission) {
-            Gate::define($permission->slug, function(User $user) use ($permission){
-              return $user->hasRole($permission->roles) /*|| $user->isAdmin()*/;
+            foreach ($this->getPermissions() as $key => $permission) {
+                Gate::define($permission->slug, function(User $user) use ($permission){
+                return $user->hasRole($permission->roles) /*|| $user->isAdmin()*/;
             });
           }
         }
@@ -46,6 +46,6 @@ class AuthServiceProvider extends ServiceProvider
 
     private function getPermissions()
     {
-      return Permission::with('roles')->get();
+        return Permission::with('roles')->get();
     }
 }

@@ -32,6 +32,7 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
+        // Desabilito a checakem de ForeignKeys para não apresentar erros quando executar um rollback ou migrate refresh
         Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('users');
         Schema::enableForeignKeyConstraints();

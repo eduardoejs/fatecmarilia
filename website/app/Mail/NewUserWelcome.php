@@ -33,6 +33,8 @@ class NewUserWelcome extends Mailable
      */
     public function build()
     {
-        return $this->subject("Credenciais para acesso ao website")->markdown('emails.user.newuserwelcome');
+        // Altera o subject do email e chama a view do tipo markdown
+        return $this->subject("Credenciais para acesso ao website")
+                    ->markdown('emails.user.newuserwelcome');
     }
 }

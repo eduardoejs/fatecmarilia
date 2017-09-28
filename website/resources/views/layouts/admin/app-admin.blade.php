@@ -34,7 +34,7 @@
 
             @include('admin.includes.sidebar-menu')
 
-            @include('admin.includes.menu-footer-buttons')
+            <!-- include('admin.includes.menu-footer-buttons') -->
           </div>
         </div>
 
@@ -56,7 +56,6 @@
     <script src="{{ asset('/gentelella/vendors/bootstrap/dist/js/bootstrap.min.js') }}"></script>
     <!-- FastClick -->
     <script src="{{ asset('/gentelella/vendors/fastclick/lib/fastclick.js') }}"></script>
-
     <!-- bootstrap-progressbar -->
     <script src="{{ asset('/gentelella/vendors/bootstrap-progressbar/bootstrap-progressbar.min.js') }}"></script>
     @yield('src-js')

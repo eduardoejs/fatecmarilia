@@ -15,7 +15,7 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        \Carbon\Carbon::setLocale('pt_BR');
+        \Carbon\Carbon::setLocale('pt_BR'); // Exibe as mensagens do Carbon em Português
     }
 
     /**
