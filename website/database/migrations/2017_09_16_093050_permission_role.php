@@ -7,7 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 class PermissionRole extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. Tabela pivô (NxN) entre Permissions e Roles
      *
      * @return void
      */

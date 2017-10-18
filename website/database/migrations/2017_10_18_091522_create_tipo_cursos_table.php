@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DropPlainPasswordUsersTable extends Migration
+class CreateTipoCursosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,10 @@ class DropPlainPasswordUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table){
-            $table->dropColumn(['plainPassword']);
+        Schema::create('tipo_cursos', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('descricao', 50); // Se é de Graduação, Pós-Graduação, etc
+            $table->timestamps();
         });
     }
 
@@ -25,8 +27,6 @@ class DropPlainPasswordUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table){
-            $table->string('plainPassword')->nullable();
-        });
+        Schema::dropIfExists('tipo_cursos');
     }
 }

@@ -5,6 +5,8 @@ namespace App\Models\Admin\Users;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Admin\NivelAcesso\Role;
+use App\Models\Admin\Instituicao\Cargo;
+use App\Models\Admin\Academico\Disciplina;
 use App\Events\NewUser;
 
 class User extends Authenticatable
@@ -17,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'status',
+        'name', 'email', 'password', 'status', 'cpf', 'titulacao', 'sexo', 'url_lattes'
     ];
 
     protected $events = [
@@ -39,6 +41,14 @@ class User extends Authenticatable
     public function roles()
     {
       return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Relacionamento 1xN entre a tabela de Users com a tabela de Cargos
+     */
+    public function cargo()
+    {
+      return $this->belongsTo(Cargo::class);
     }
 
     /**
@@ -90,6 +100,16 @@ class User extends Authenticatable
         return $role->intersect($this->roles)->count();
     }
 
+    public function setCargo(Cargo $cargo)
+    {
+      return $this->cargo()->associate($cargo);
+    }
+
+    public function unsetCargo(Cargo $cargo)
+    {
+      return $this->cargo()->dissociate();
+    }
+
     /**
      * Método isAdmin retorna a role administrador
      * @return mixed
@@ -97,5 +117,5 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->hasRole('administrador');
-    }    
+    }
 }

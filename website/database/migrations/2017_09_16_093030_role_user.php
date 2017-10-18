@@ -7,7 +7,7 @@ use Illuminate\Database\Migrations\Migration;
 class RoleUser extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. Tabela pivô (NxN) entre Roles e Users
      *
      * @return void
      */
