@@ -28,7 +28,7 @@
     <div class="col-md-12 col-sm-12 col-xs-12">
       <div class="x_panel">
         <div class="x_title">
-          <h2>Usuários do sistema: Administradores, Docentes, Funcionários, etc.</h2>
+          <h2>Usuários do sistema: Ex-Alunos.</h2>
           <ul class="nav navbar-right panel_toolbox">
             <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a></li>
             <li class="dropdown">
@@ -46,7 +46,7 @@
           <div class="row">
             @can('create-user')
               <div class="box-body">
-                <a href="{{ route('users.create') }}" class="btn btn-app"><i class="fa fa-user-plus" aria-hidden="true"></i> Novo</a>
+                <a href="#" class="btn btn-app"><i class="fa fa-user-plus" aria-hidden="true"></i> Novo</a>
               </div>
             @endcan
           </div>
@@ -75,6 +75,7 @@
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Perfil</th>
+                        <th>Curso</th>
                         <th>Status</th>
                         <th>Criado em</th>
                         <th>Ações</th>
@@ -83,16 +84,10 @@
                     <tbody>
                       @foreach ($users as $key => $user)
                       <tr>
-                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->nome }}</td>
                         <td>{{ $user->email }}</td>
-                        <td>
-                          @if (count($user->roles) > 0)
-                            @forelse ($user->roles as $key => $role)
-                                <span class="label label-default">{{ $role->name }}</span>
-                            @empty
-                            @endforelse
-                          @endif
-                        </td>
+                        <td><span class="label label-default">{{ $user->role->name }}</span></td>                        
+                        <td>{{ $user->curso->nome }}</td>
                         @if ($user->status)
                           <td class="text-center"><small class="label label-success"><i class="fa fa-check"></i> <span>Liberado</span></small></td>
                         @else

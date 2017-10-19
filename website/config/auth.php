@@ -45,6 +45,26 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+
+        'aluno' => [
+            'driver' => 'session',
+            'provider' => 'alunos',
+        ],
+
+        'aluno-api' => [
+            'driver' => 'session',
+            'provider' => 'alunos',
+        ],
+
+        'exaluno' => [
+            'driver' => 'session',
+            'provider' => 'exalunos',
+        ],
+
+        'exaluno-api' => [
+            'driver' => 'session',
+            'provider' => 'alunos',
+        ],
     ],
 
     /*
@@ -68,6 +88,16 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin\Users\User::class,
+        ],
+
+        'alunos' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin\Users\Aluno::class,
+        ],
+
+        'exalunos' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin\Users\ExAluno::class,
         ],
 
         // 'users' => [
@@ -94,6 +124,18 @@ return [
     'passwords' => [
         'users' => [
             'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 30,
+        ],
+
+        'alunos' => [
+            'provider' => 'alunos',
+            'table' => 'password_resets',
+            'expire' => 60,
+        ],
+
+        'exalunos' => [
+            'provider' => 'exalunos',
             'table' => 'password_resets',
             'expire' => 60,
         ],

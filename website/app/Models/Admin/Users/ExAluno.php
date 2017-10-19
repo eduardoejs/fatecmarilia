@@ -8,16 +8,26 @@ use App\Models\Admin\NivelAcesso\Role;
 use App\Models\Admin\Academico\Curso;
 
 
-class Aluno extends Authenticatable
+class ExAluno extends Authenticatable
 {
     use Notifiable;
 
-    protected $guard = 'aluno';
-
+    protected $guard = 'exaluno';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'nome', 'matricula', 'cpf', 'email', 'password', 'termo', 'turno', 'status', 'trancado', 'sexo', 'role_id', 'curso_id',
+        'nome', 'matricula', 'cpf', 'email', 'password', 'status', 'sexo', 'role_id', 'curso_id',
     ];
 
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
     protected $hidden = [
         'password', 'remember_token',
     ];

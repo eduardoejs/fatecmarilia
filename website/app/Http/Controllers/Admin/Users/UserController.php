@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Users\User;
+use App\Models\Admin\Users\Aluno;
+use App\Models\Admin\Users\ExAluno;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -12,6 +14,7 @@ class UserController extends Controller
 {
     public function __construct()
     {
+        $this->middleware('auth');
         \Carbon\Carbon::setLocale('pt_BR'); // Exibe as mensagens do Carbon em Português
     }
     /**
@@ -25,6 +28,22 @@ class UserController extends Controller
 
         $users = User::orderBy('name', 'asc')->paginate(50);
         return view('admin.users.index')->withUsers($users);
+    }
+
+    public function listarAlunos()
+    {
+        $this->authorize('read-user');
+
+        $users = Aluno::orderBy('nome', 'asc')->paginate(50);
+        return view('admin.users.alunos.index')->withUsers($users);
+    }
+
+    public function listarExAlunos()
+    {
+        $this->authorize('read-user');
+
+        $users = ExAluno::orderBy('nome', 'asc')->paginate(50);
+        return view('admin.users.exalunos.index')->withUsers($users);
     }
 
     /**

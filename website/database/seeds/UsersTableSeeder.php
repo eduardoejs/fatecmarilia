@@ -28,18 +28,6 @@ class UsersTableSeeder extends Seeder
         'status' => 1,
       ]);
 
-      User::create([
-        'name' => 'Eduardo',
-        'email' => 'edu@docente.br',
-        'password' => bcrypt('123456'),
-        'cpf' => '12345678901',
-        'titulacao' => 'Mestre',
-        'cargo_id' => 4,
-        'sexo' => 'M',
-        'url_lattes' => null,
-        'status' => 1,
-      ]);
-
       $faker = Faker::create();
       $cargo = Cargo::find(2);
 

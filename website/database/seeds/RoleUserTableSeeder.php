@@ -26,13 +26,13 @@ class RoleUserTableSeeder extends Seeder
         $role = Role::whereName('DOCENTE')->first();
         $user->setRole($role);
 
-        $roleAluno = Role::whereName('ALUNO')->first();
+        /*$roleAluno = Role::whereName('ALUNO')->first();
         $users = User::all();
         foreach ($users as $key => $user) {
           if($user->id != 1 && $user->id != 2)
           {
             $user->setRole($roleAluno);
           }
-        }
+        }*/
     }
 }

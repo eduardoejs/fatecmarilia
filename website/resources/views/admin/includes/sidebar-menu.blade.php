@@ -11,7 +11,14 @@
         </ul>
       </li>
       @can('read-user')
-        <li><a href="{{ route('users.index') }}"><i class="fa fa-users"></i> Usuários do Sistema </a></li>
+        <li><a><i class="fa fa-users"></i> Usuários do Sistema <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{{ route('users.index') }}"><i class='fa fa-user'></i> Usuários</a></li>
+            <li><a href="{{ route('users.alunos.listar') }}"><i class='fa fa-graduation-cap'></i> Alunos</a></li>
+            <li><a href="{{ route('users.exalunos.listar') }}"><i class='fa fa-asterisk'></i> Ex-Alunos</a></li>
+          </ul>
+        </li>
+
       @endcan
       <li><a><i class="fa fa-cubes"></i> Controle Acesso <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
