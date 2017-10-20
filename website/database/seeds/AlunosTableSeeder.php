@@ -2,20 +2,17 @@
 
 use Illuminate\Database\Seeder;
 use App\Models\Admin\Users\Aluno;
+use App\Models\Admin\NivelAcesso\Role;
 use Faker\Factory as Faker;
 
 class AlunosTableSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         DB::table('alunos')->delete();
 
         $faker = Faker::create();
+
         foreach (range(1,10) as $index) {
           Aluno::create([
             'nome' => strtoupper($faker->name),
@@ -28,8 +25,8 @@ class AlunosTableSeeder extends Seeder
             'turno' => 'M',
             'trancado' => 0,
             'sexo' => 'M',
-            'role_id' => 4,
-            'curso_id' => 1
+            'curso_id' => 1,
+            'remember_token' => str_random(10),
           ]);
         }
 
@@ -45,8 +42,8 @@ class AlunosTableSeeder extends Seeder
             'turno' => 'N',
             'trancado' => 0,
             'sexo' => 'F',
-            'role_id' => 4,
-            'curso_id' => 1
+            'curso_id' => 1,
+            'remember_token' => str_random(10),
           ]);
         }
 
@@ -62,9 +59,15 @@ class AlunosTableSeeder extends Seeder
             'turno' => null,
             'trancado' => 0,
             'sexo' => 'F',
-            'role_id' => 4,
-            'curso_id' => 2
+            'curso_id' => 2,
+            'remember_token' => str_random(10),
           ]);
+        }
+
+        $roleAluno = Role::whereName('ALUNO')->first();
+        $users = Aluno::all();
+        foreach ($users as $key => $user) {
+          $user->setRole($roleAluno);          
         }
     }
 }

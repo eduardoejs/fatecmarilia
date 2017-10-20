@@ -24,8 +24,20 @@ Route::namespace('Admin\Users')->prefix('admin')->group(function(){
   Route::resource('users', 'UserController');
   Route::post('users/search', 'UserController@pesquisar')->name('users.pesquisa');
   Route::get('users/{id}/status/{status}', 'UserController@setStatus')->name('users.status');
-  Route::get('users/alunos/list', 'UserController@listarAlunos')->name('users.alunos.listar');
-  Route::get('users/ex-alunos/list', 'UserController@listarExAlunos')->name('users.exalunos.listar');
+
+  //Gerenciamento de usuarios do tipo ALUNO
+  Route::get('users/alunos/index', 'UserAlunoController@index')->name('users.alunos.listar');
+  Route::resource('usersAlunos', 'UserAlunoController');
+  Route::get('users/alunos/search', 'UserAlunoController@pesquisar')->name('users.alunos.pesquisa');
+  //Route::get('users/alunos/create', 'UserAlunoController@create')->name('users.alunos.create');
+  Route::get('users/alunos/edit/{id}', 'UserAlunoController@edit')->name('users.alunos.edit');
+  Route::get('users/alunos/destroy/{id}', 'UserAlunoController@destroy')->name('users.alunos.destroy');
+  Route::get('users/alunos/{id}/status/{status}', 'UserAlunoController@setStatus')->name('users.alunos.status');
+
+  //Gerenciamento de usuarios do tipo EX-ALUNO
+  Route::get('users/exalunos/index', 'UserExAlunoController@index')->name('users.exalunos.listar');
+  Route::get('users/exalunos/{id}/status/{status}', 'UserExAlunoController@setStatus')->name('users.exaluno.status');
+
 });
 
 Route::prefix('aluno')->group(function (){

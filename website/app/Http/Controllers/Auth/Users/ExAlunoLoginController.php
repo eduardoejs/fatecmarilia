@@ -36,11 +36,17 @@ class ExAlunoLoginController extends Controller
             return redirect()->intended(route('exaluno.index'));
         }
         // If unsuccessful, then redirect back to the login with the form data
-        return redirect()->back()->withInput($request->only('email', 'remember'));
+        return redirect()->back()->withErrors(['email' => 'Credenciais inválidas!'])->withInput($request->only('email', 'remember'));
+        //return redirect()->back()->withInput($request->only('email', 'remember'));
     }
     public function logout()
     {
         Auth::guard('exaluno')->logout();
         return redirect('/');
+    }
+
+    public function guard()
+    {
+      return Auth::guard('exaluno');
     }
 }

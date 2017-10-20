@@ -86,7 +86,14 @@
                       <tr>
                         <td>{{ $user->nome }}</td>
                         <td>{{ $user->email }}</td>
-                        <td><span class="label label-default">{{ $user->role->name }}</span></td>                        
+                        <td>
+                          @if (count($user->roles) > 0)
+                            @forelse ($user->roles as $key => $role)
+                                <span class="label label-default">{{ $role->name }}</span>
+                            @empty
+                            @endforelse
+                          @endif
+                        </td>
                         <td>{{ $user->curso->nome }}</td>
                         @if ($user->status)
                           <td class="text-center"><small class="label label-success"><i class="fa fa-check"></i> <span>Liberado</span></small></td>
@@ -97,9 +104,9 @@
                         <td>
                           <div class="btn-group  btn-group-sm">
                             @if ($user->status)
-                              <a class="btn btn-default" href="{{ route('users.status', ['id' => $user->id, 'status' => 0]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bloquear"><i class="fa fa-ban"></i></a>
+                              <a class="btn btn-default" href="{{ route('users.exaluno.status', ['id' => $user->id, 'status' => 0]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bloquear"><i class="fa fa-ban"></i></a>
                             @else
-                              <a class="btn btn-default" href="{{ route('users.status', ['id' => $user->id, 'status' => 1]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Liberar"><i class="fa fa-check"></i></a>
+                              <a class="btn btn-default" href="{{ route('users.exaluno.status', ['id' => $user->id, 'status' => 1]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Liberar"><i class="fa fa-check"></i></a>
                             @endif
                               <a class="btn btn-default" href="{{ route('users.edit', ['id' => $user->id]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar"><i class='fa fa-edit'></i></a>
                               <a href="{{ route('users.destroy', ['id' => $user->id]) }}" onclick="event.preventDefault();document.getElementById('delete-form{{$user->id}}').submit();" class="btn btn-default btn-flat" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excluir"><i class="fa fa-trash" aria-hidden="true"></i></a>

@@ -23,14 +23,10 @@ class CreateExAlunosTable extends Migration
             $table->char('sexo', 1);
             $table->boolean('status')->default(true); //Se está ativo ou inativo
 
-            //Criando o relacionamento com a tabela de Role (perfil)
-            $table->integer('role_id')->unsigned();
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-
             //Criando o relacionamento com a tabela de tipo de cursos
             $table->integer('curso_id')->unsigned();
             $table->foreign('curso_id')->references('id')->on('cursos')->onDelete('cascade');
-            
+
             $table->rememberToken();
             $table->timestamps();
         });

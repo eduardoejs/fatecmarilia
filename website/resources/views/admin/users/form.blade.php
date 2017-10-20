@@ -1,9 +1,9 @@
 <div class="form-group">
   <label for="name">Nome:</label>
-  @if (isset($user->name))
-    <input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-control" id="name" placeholder="Nome do usuário" required>
+  @if (isset($user->nome))
+    <input type="text" name="name" value="{{ old('nome', $user->nome) }}" class="form-control" id="name" placeholder="Nome do usuário" required>
   @else
-    <input type="text" name="name" value="{{ old('name') }}" class="form-control" id="name" placeholder="Nome do usuário" required>
+    <input type="text" name="name" value="{{ old('nome') }}" class="form-control" id="name" placeholder="Nome do usuário" required>
   @endif
 </div>
 <div class="form-group">

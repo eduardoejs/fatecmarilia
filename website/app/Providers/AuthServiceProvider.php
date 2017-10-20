@@ -4,7 +4,6 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use App\Models\Admin\Users\User;
 use App\Models\Admin\NivelAcesso\Permission;
 
 class AuthServiceProvider extends ServiceProvider
@@ -28,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         // Executa o gate antes das demais permissões verificando se o usuário é administrador
-        Gate::before(function(User $user, $ability){
+        Gate::before(function($user, $ability){
             if($user->hasRole('administrador')){
                 return true;
             }
@@ -37,7 +36,7 @@ class AuthServiceProvider extends ServiceProvider
         // Registra todas as permissões do sistema automaticamente
         if(!\App::runningInConsole()){
             foreach ($this->getPermissions() as $key => $permission) {
-                Gate::define($permission->slug, function(User $user) use ($permission){
+                Gate::define($permission->slug, function($user) use ($permission){
                     return $user->hasRole($permission->roles) /*|| $user->isAdmin()*/;
             });
           }

@@ -26,10 +26,6 @@ class CreateAlunosTable extends Migration
             $table->boolean('trancado')->default(false); //Define se está com a matrícula trancada (curso trancado). Se sim o "status" deverá ser alterado para false
             $table->boolean('status')->default(true); //Se está ativo ou inativo
 
-            //Criando o relacionamento com a tabela de Role (perfil)
-            $table->integer('role_id')->unsigned();
-            $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
-
             //Criando o relacionamento com a tabela de tipo de cursos
             $table->integer('curso_id')->unsigned();
             $table->foreign('curso_id')->references('id')->on('cursos')->onDelete('cascade');
@@ -46,6 +42,9 @@ class CreateAlunosTable extends Migration
      */
     public function down()
     {
+        // Desabilito a checakem de ForeignKeys para não apresentar erros quando executar um rollback ou migrate refresh
+        Schema::disableForeignKeyConstraints();
         Schema::dropIfExists('alunos');
+        Schema::enableForeignKeyConstraints();
     }
 }

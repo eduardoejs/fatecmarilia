@@ -15,7 +15,7 @@ class Aluno extends Authenticatable
     protected $guard = 'aluno';
 
     protected $fillable = [
-        'nome', 'matricula', 'cpf', 'email', 'password', 'termo', 'turno', 'status', 'trancado', 'sexo', 'role_id', 'curso_id',
+        'nome', 'matricula', 'cpf', 'email', 'password', 'termo', 'turno', 'status', 'trancado', 'sexo', 'curso_id',
     ];
 
     protected $hidden = [
@@ -23,11 +23,12 @@ class Aluno extends Authenticatable
     ];
 
     /**
-     * Relacionamento 1xN entre a tabela de Alunos com a tabela de Roles
+     * Relacionamento NxN entre a tabela de Alunos com a tabela de Roles
      */
-    public function role()
+    public function roles()
     {
-      return $this->belongsTo(Role::class);
+      //O segundo parâmetro informo o nome da tabela pivot
+      return $this->belongsToMany(Role::class, 'role_aluno');
     }
 
     /**
@@ -38,30 +39,20 @@ class Aluno extends Authenticatable
       return $this->belongsTo(Curso::class);
     }
 
-    /**
-     * Método setRole faz o associate (associação) da role passada como parâmetro diretamente pelo objeto de Aluno.
-     * Ex.:
-     *      $aluno = Aluno::find(1);
-     *      $role = Role::find(1);
-     *      $aluno->role()->associate($role);
-     *      $aluno->save();
-     * @param $role
-     */
-    public function setRole(Role $role)
+    public function setRole($role)
     {
-      return $this->role()->associate($role);
+      if(is_string($role)){
+        return $this->roles()->attach(Role::whereSlug($role)->firstOrFail());
+      }
+      return $this->roles()->attach(Role::whereSlug($role->slug)->firstOrFail());
     }
 
-    /**
-     * Método unsetRole faz o dissociate (desassociação) da role passada como parâmetro diretamente pelo objeto de Aluno.
-     * Ex.:
-     *      $aluno = Aluno::find(1);
-     *      $aluno->role()->dissociate();
-     *      $aluno->save();
-     */
-    public function unsetRole()
+    public function unsetRole($role)
     {
-      return $this->role()->dissociate();
+      if(is_string($role)){
+        return $this->roles()->detach(Role::whereSlug($role)->firstOrFail());
+      }
+      return $this->roles()->detach($role);
     }
 
     /**
@@ -88,6 +79,18 @@ class Aluno extends Authenticatable
     public function unsetCurso()
     {
       return $this->curso()->dissociate();
+    }
+
+    public function hasRole($role)
+    {
+        if(is_string($role)){
+            //O método contains determina se a collection (this->roles) contém um determinado
+            // item retornando true ou false
+            return $this->roles->contains('slug', $role);
+        }
+        //O método intersect remove todos os valores da coleção original que não estão presentes
+        // na matriz ou coleção fornecida. A coleção resultante preservará as chaves da coleção original
+        return $role->intersect($this->roles)->count();
     }
 
 }

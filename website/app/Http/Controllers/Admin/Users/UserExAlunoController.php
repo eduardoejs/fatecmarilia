@@ -4,17 +4,13 @@ namespace App\Http\Controllers\Admin\Users;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Admin\Users\Aluno;
+use App\Models\Admin\Users\ExAluno;
 
-class AlunoController extends Controller
+class UserExAlunoController extends Controller
 {
     public function __construct()
     {
-      //permite acesso somente a pessoas autenticadas e
-      //permite autenticar somente as pessoas que possuem o guard admin
-      //se falhar será redirecionado para o login default - guard default
-      //$this->middleware('auth:aluno');
-      $this->middleware('auth:aluno');
+      $this->middleware('auth');
     }
 
     /**
@@ -24,7 +20,10 @@ class AlunoController extends Controller
      */
     public function index()
     {
-        return view('admin.home');
+      $this->authorize('read-user');
+
+      $users = ExAluno::orderBy('nome', 'asc')->paginate(30);
+      return view('admin.users.exalunos.index')->withUsers($users);
     }
 
     /**
@@ -103,7 +102,7 @@ class AlunoController extends Controller
     {
         $this->authorize('set-status-user');
 
-        $user = Aluno::findOrFail($id);
+        $user = ExAluno::findOrFail($id);
         if($status == 1){
             $user->status = 1;
         }
@@ -111,6 +110,6 @@ class AlunoController extends Controller
             $user->status = 0;
         }
         $user->save();
-        return redirect()->route('users.alunos.listar');
+        return redirect()->route('users.exalunos.listar');
     }
 }

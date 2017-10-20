@@ -33,11 +33,12 @@ class ExAluno extends Authenticatable
     ];
 
     /**
-     * Relacionamento 1xN entre a tabela de Alunos com a tabela de Roles
+     * Relacionamento NxN entre a tabela de Alunos com a tabela de Roles
      */
-    public function role()
+    public function roles()
     {
-      return $this->belongsTo(Role::class);
+      ////O segundo parâmetro informo o nome da tabela pivot
+      return $this->belongsToMany(Role::class, 'role_exaluno');
     }
 
     /**
@@ -48,30 +49,22 @@ class ExAluno extends Authenticatable
       return $this->belongsTo(Curso::class);
     }
 
-    /**
-     * Método setRole faz o associate (associação) da role passada como parâmetro diretamente pelo objeto de Aluno.
-     * Ex.:
-     *      $aluno = Aluno::find(1);
-     *      $role = Role::find(1);
-     *      $aluno->role()->associate($role);
-     *      $aluno->save();
-     * @param $role
-     */
-    public function setRole(Role $role)
+
+    public function setRole($role)
     {
-      return $this->role()->associate($role);
+      if(is_string($role)){
+        return $this->roles()->attach(Role::whereSlug($role)->firstOrFail());
+      }
+      return $this->roles()->attach(Role::whereSlug($role->slug)->firstOrFail());
     }
 
-    /**
-     * Método unsetRole faz o dissociate (desassociação) da role passada como parâmetro diretamente pelo objeto de Aluno.
-     * Ex.:
-     *      $aluno = Aluno::find(1);
-     *      $aluno->role()->dissociate();
-     *      $aluno->save();
-     */
-    public function unsetRole()
+
+    public function unsetRole($role)
     {
-      return $this->role()->dissociate();
+      if(is_string($role)){
+        return $this->roles()->detach(Role::whereSlug($role)->firstOrFail());
+      }
+      return $this->roles()->detach($role);
     }
 
     /**

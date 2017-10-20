@@ -20,13 +20,15 @@
         </li>
 
       @endcan
-      <li><a><i class="fa fa-cubes"></i> Controle Acesso <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-          <li><a href="#"><i class='fa fa-user'></i> Perfil de usuário</a></li>
-          <li><a href="#"><i class='fa fa-link'></i> Permissões x Perfil</a></li>
-          <li><a href="#"><i class='fa fa-list'></i> Permissões</a></li>
-        </ul>
-      </li>
+      @can('read-permission')
+        <li><a><i class="fa fa-cubes"></i> Controle Acesso <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="#"><i class='fa fa-user'></i> Perfil de usuário</a></li>
+            <li><a href="#"><i class='fa fa-link'></i> Permissões x Perfil</a></li>
+            <li><a href="#"><i class='fa fa-list'></i> Permissões</a></li>
+          </ul>
+        </li>
+      @endcan
       <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
         <ul class="nav child_menu">
           <li><a href="form.html">General Form</a></li>

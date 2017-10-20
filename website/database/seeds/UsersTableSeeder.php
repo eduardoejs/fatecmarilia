@@ -17,7 +17,7 @@ class UsersTableSeeder extends Seeder
       DB::table('users')->delete();
 
       User::create([
-        'name' => 'ADMIN USER',
+        'nome' => 'ADMIN USER',
         'email' => 'admin@admin.br',
         'password' => bcrypt('123456'),
         'cpf' => '00000000000',
@@ -33,7 +33,7 @@ class UsersTableSeeder extends Seeder
 
       foreach (range(1,5) as $index) {
         User::create([
-          'name' => strtoupper($faker->name),
+          'nome' => strtoupper($faker->name),
           'email' => $faker->unique()->safeEmail,
           'cpf' => str_random(11),
           'titulacao' => null,
@@ -49,7 +49,7 @@ class UsersTableSeeder extends Seeder
       $cargo = Cargo::find(3);
       foreach (range(1,5) as $index) {
         User::create([
-          'name' => strtoupper($faker->name),
+          'nome' => strtoupper($faker->name),
           'email' => $faker->unique()->safeEmail,
           'cpf' => str_random(11),
           'titulacao' => null,

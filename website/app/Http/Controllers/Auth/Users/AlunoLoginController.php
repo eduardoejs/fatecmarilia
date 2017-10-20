@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Auth\Users;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Auth;
 
 class AlunoLoginController extends Controller
 {
@@ -30,17 +30,24 @@ class AlunoLoginController extends Controller
             'email' => 'required|email',
             'password' => 'required|min:6'
         ]);
+
         // Tentativa de autenticação do usuário
         if(Auth::guard('aluno')->attempt(['email' => $request->email, 'password' => $request->password, 'status' => 1], $request->remember)){
             // If successful, then redirect to their intened location
             return redirect()->intended(route('aluno.index'));
         }
         // If unsuccessful, then redirect back to the login with the form data
-        return redirect()->back()->withInput($request->only('email', 'remember'));
+        return redirect()->back()->withErrors(['email' => 'Credenciais inválidas!'])->withInput($request->only('email', 'remember'));
+        //return redirect()->back()->withInput($request->only('email', 'remember'))->withErrors();
     }
     public function logout()
     {
         Auth::guard('aluno')->logout();
         return redirect('/');
+    }
+
+    public function guard()
+    {
+      return Auth::guard('aluno');
     }
 }

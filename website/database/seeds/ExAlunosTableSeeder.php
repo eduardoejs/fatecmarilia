@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Models\Admin\NivelAcesso\Role;
 use App\Models\Admin\Users\ExAluno;
 use Faker\Factory as Faker;
 
@@ -25,9 +26,14 @@ class ExAlunosTableSeeder extends Seeder
           'password' => bcrypt('123456'),
           'status' => 1,
           'sexo' => 'M',
-          'role_id' => 5,
           'curso_id' => 1
         ]);
+      }
+
+      $roleAluno = Role::whereName('EX-ALUNO')->first();
+      $users = ExAluno::all();
+      foreach ($users as $key => $user) {
+        $user->setRole($roleAluno);
       }
     }
 }

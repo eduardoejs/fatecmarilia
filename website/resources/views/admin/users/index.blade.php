@@ -83,7 +83,7 @@
                     <tbody>
                       @foreach ($users as $key => $user)
                       <tr>
-                        <td>{{ $user->name }}</td>
+                        <td>{{ $user->nome }}</td>
                         <td>{{ $user->email }}</td>
                         <td>
                           @if (count($user->roles) > 0)

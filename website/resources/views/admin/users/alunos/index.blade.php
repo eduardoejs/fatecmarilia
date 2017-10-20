@@ -8,7 +8,7 @@
     <div class="title_right">
         <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
             <div class="input-group">
-                <form action="{{ route('users.pesquisa') }}" method="post" style="display: ;">
+                <form action="{{ route('users.alunos.pesquisa') }}" method="post" style="display: ;">
                     {{ csrf_field() }}
                     <div class="input-group">
                         <input type="text" name="busca" value="{{ isset($busca) ? $busca : '' }}" class="form-control" placeholder="Pesquisar por...">
@@ -46,7 +46,7 @@
           <div class="row">
             @can('create-user')
               <div class="box-body">
-                <a href="#" class="btn btn-app"><i class="fa fa-user-plus" aria-hidden="true"></i> Novo</a>
+                <a href="{{ route('usersAlunos.create') }}" class="btn btn-app"><i class="fa fa-user-plus" aria-hidden="true"></i> Novo</a>
               </div>
             @endcan
           </div>
@@ -88,7 +88,14 @@
                       <tr>
                         <td>{{ $user->nome }}</td>
                         <td>{{ $user->email }}</td>
-                        <td><span class="label label-default">{{ $user->role->name }}</span></td>
+                        <td>
+                          @if (count($user->roles) > 0)
+                            @forelse ($user->roles as $key => $role)
+                                <span class="label label-default">{{ $role->name }}</span>
+                            @empty
+                            @endforelse
+                          @endif
+                        </td>
                         <td>{{ $user->termo }}</td>
                         <td>{{ $user->turno }}</td>
                         <td>{{ $user->curso->nome }}</td>
@@ -101,13 +108,13 @@
                         <td>
                           <div class="btn-group  btn-group-sm">
                             @if ($user->status)
-                              <a class="btn btn-default" href="{{ route('users.status', ['id' => $user->id, 'status' => 0]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bloquear"><i class="fa fa-ban"></i></a>
+                              <a class="btn btn-default" href="{{ route('users.alunos.status', ['id' => $user->id, 'status' => 0]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Bloquear"><i class="fa fa-ban"></i></a>
                             @else
-                              <a class="btn btn-default" href="{{ route('users.status', ['id' => $user->id, 'status' => 1]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Liberar"><i class="fa fa-check"></i></a>
+                              <a class="btn btn-default" href="{{ route('users.alunos.status', ['id' => $user->id, 'status' => 1]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Liberar"><i class="fa fa-check"></i></a>
                             @endif
-                              <a class="btn btn-default" href="{{ route('users.edit', ['id' => $user->id]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar"><i class='fa fa-edit'></i></a>
+                              <a class="btn btn-default" href="{{ route('usersAlunos.edit', ['id' => $user->id]) }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Editar"><i class='fa fa-edit'></i></a>
                               <a href="{{ route('users.destroy', ['id' => $user->id]) }}" onclick="event.preventDefault();document.getElementById('delete-form{{$user->id}}').submit();" class="btn btn-default btn-flat" data-toggle="tooltip" data-placement="top" title="" data-original-title="Excluir"><i class="fa fa-trash" aria-hidden="true"></i></a>
-                              <form id="delete-form{{$user->id}}" action="{{ route('users.destroy', ['id' => $user->id]) }}" method="post" style="display: none">
+                              <form id="delete-form{{$user->id}}" action="{{ route('usersAlunos.destroy', ['id' => $user->id]) }}" method="post" style="display: none">
                                   {{ csrf_field() }}
                                   {!! method_field('DELETE') !!}
                               </form>
