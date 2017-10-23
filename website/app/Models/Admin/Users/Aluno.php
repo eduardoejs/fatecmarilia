@@ -92,5 +92,4 @@ class Aluno extends Authenticatable
         // na matriz ou coleção fornecida. A coleção resultante preservará as chaves da coleção original
         return $role->intersect($this->roles)->count();
     }
-
 }
